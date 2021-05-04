@@ -98,7 +98,7 @@ public class GameRepository {
         }
     }
 
-    private String dynamicallyBuildSqlWithInClause(List<Difficulty> minimumDifficultyList) {
+    private String dynamicallyBuildSqlWithInClause(List<Difficulty> minimumDifficultyList) throws Exception {
         StringBuilder stringBuilder = new StringBuilder("select * from game as g inner join category as c on g.category_id = c.id inner join difficulty as d on g.difficulty_id = d.id where d.difficulty_name in (");
         String collect = minimumDifficultyList.stream().map(difficulty -> "?").collect(Collectors.joining(","));
 
