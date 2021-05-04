@@ -2,7 +2,6 @@ package com.realdolmen.commandpattern;
 
 import com.realdolmen.domain.Borrow;
 import com.realdolmen.domain.Borrower;
-import com.realdolmen.exceptions.NotFoundException;
 import com.realdolmen.services.BorrowServiceImpl;
 import com.realdolmen.services.BorrowerServiceImpl;
 import com.realdolmen.services.Service;
@@ -16,7 +15,7 @@ public class ShowBorrowedGames implements Command {
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public void execute() throws NotFoundException {
+    public void execute() throws Exception {
         System.out.println("---- Result -----");
         borrowService.findAll().forEach(borrow -> {
             LocalDate borrowDate = borrow.getBorrowDate();

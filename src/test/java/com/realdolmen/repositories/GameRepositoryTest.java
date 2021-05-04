@@ -1,8 +1,6 @@
 package com.realdolmen.repositories;
 
 import com.realdolmen.domain.Game;
-import com.realdolmen.exceptions.NotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +10,7 @@ class GameRepositoryTest {
     private GameRepository gameRepository = new GameRepository();
 
     @Test
-    void findById() throws NotFoundException {
+    void findById() throws Exception {
         Game foundGame = gameRepository.findById(5);
         assertAll(() -> assertEquals("Abracadabra" ,  foundGame.getGameName()),
                 () -> assertEquals("DaVinci Games" , foundGame.getEditor()),

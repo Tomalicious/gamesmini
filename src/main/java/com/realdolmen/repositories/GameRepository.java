@@ -3,8 +3,6 @@ package com.realdolmen.repositories;
 import com.realdolmen.domain.Category;
 import com.realdolmen.domain.Difficulty;
 import com.realdolmen.domain.Game;
-import com.realdolmen.exceptions.NotFoundException;
-import org.w3c.dom.ls.LSInput;
 
 import java.sql.*;
 import java.util.*;
@@ -12,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class GameRepository {
 
-    public Game findById(int id) throws NotFoundException {
+    public Game findById(int id) throws Exception {
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from game as g inner join category as c on g.category_id = c.id inner join difficulty as d on g.difficulty_id = d.id where g.id = ? ");
             preparedStatement.setInt(1, id);
@@ -20,13 +18,13 @@ public class GameRepository {
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
             return createFullGameObject(resultSet);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             e.printStackTrace();
-            throw new NotFoundException("Game not found!");
+            throw new Exception("Game not found!");
         }
     }
 
-    public List<Game> findByName(String name) throws NotFoundException {
+    public List<Game> findByName(String name) throws Exception {
         List<Game> games = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from game as g inner join category as c on g.category_id = c.id inner join difficulty as d on g.difficulty_id = d.id where g.game_name like ? ");
@@ -37,7 +35,7 @@ public class GameRepository {
                 games.add(createFullGameObject(resultSet));
             }
             if (games.isEmpty()) {
-                throw new NotFoundException("No games are found!");
+                throw new Exception("No games are found!");
             }
             return games;
         } catch (SQLException e) {
@@ -46,7 +44,7 @@ public class GameRepository {
         }
     }
 
-    public List<Game> findAll() throws NotFoundException {
+    public List<Game> findAll() throws Exception {
         List<Game> games = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from game as g inner join category as c on g.category_id = c.id inner join difficulty as d on g.difficulty_id = d.id order by g.game_name asc ");
@@ -56,7 +54,7 @@ public class GameRepository {
                 games.add(createFullGameObject(resultSet));
             }
             if (games.isEmpty()) {
-                throw new NotFoundException("No games are found!");
+                throw new Exception("No games are found!");
             }
             return games;
         } catch (SQLException e) {
@@ -65,7 +63,7 @@ public class GameRepository {
         }
     }
 
-    public Optional<Game> findByBorrowId(int id) throws NotFoundException {
+    public Optional<Game> findByBorrowId(int id) throws Exception {
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from game as g inner join category as c on g.category_id = c.id inner join difficulty as d on g.difficulty_id = d.id inner join borrow as b on b.game_id = g.id where b.id = ? ");
             preparedStatement.setInt(1, id);
@@ -73,12 +71,12 @@ public class GameRepository {
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
             return Optional.ofNullable(createFullGameObject(resultSet));
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             return Optional.empty();
         }
     }
 
-    public List<Game> findByDifficulty(List<Difficulty> minimumDifficultyList) throws NotFoundException {
+    public List<Game> findByDifficulty(List<Difficulty> minimumDifficultyList) throws Exception {
         List<Game> games = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(dynamicallyBuildSqlWithInClause(minimumDifficultyList));
@@ -91,7 +89,7 @@ public class GameRepository {
                 games.add(createFullGameObject(resultSet));
             }
             if (games.isEmpty()) {
-                throw new NotFoundException("No games are found!");
+                throw new Exception("No games are found!");
             }
             return games;
         } catch (SQLException e) {

@@ -1,11 +1,9 @@
 package com.realdolmen.commandpattern;
 
 import com.realdolmen.domain.Game;
-import com.realdolmen.exceptions.NotFoundException;
 import com.realdolmen.services.GameServiceImpl;
 import com.realdolmen.services.Service;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class ShowGamesAndChoose implements Command {
@@ -13,7 +11,7 @@ public class ShowGamesAndChoose implements Command {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
-    public void execute() throws NotFoundException {
+    public void execute() throws Exception {
         System.out.println("----List of games -----");
         gameService.findAll().forEach(game -> System.out.format("name: %-50s \t|  category: %-50s %n", game.getGameName(), game.getCategory().getCategoryName()));
         System.out.println("----End of list -----");

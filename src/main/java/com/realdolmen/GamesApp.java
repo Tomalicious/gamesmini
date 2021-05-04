@@ -2,15 +2,11 @@ package com.realdolmen;
 
 import com.realdolmen.commandpattern.Command;
 import com.realdolmen.commandpattern.CommandsEnum;
-import com.realdolmen.exceptions.NotFoundException;
 import lombok.extern.java.Log;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
-import static java.lang.Thread.sleep;
 
 @Log //this is a lombok annotation and it uses de default logger from java not LogBack !
 public class GamesApp {
@@ -24,7 +20,7 @@ public class GamesApp {
                 Command command = chooseOption().getCommand();
                 System.out.println("clear");
                 command.execute();
-            } catch (Exception | NotFoundException e) {
+            } catch (Exception e) {
                 System.out.println("clear");
                 System.out.println("\u001b[35m" + "something went wrong please try again!");
                 if (e.getMessage() != null) {
@@ -52,12 +48,12 @@ public class GamesApp {
         System.out.println("---------");
     }
 
-    private static CommandsEnum chooseOption() throws Exception {
+    private static CommandsEnum chooseOption() throws java.lang.Exception {
         System.out.print("Choose an option: ");
         int optionId = scanner.nextInt();
         return commandsEnumList.stream()
                 .filter(commandsEnum -> commandsEnum.getOptionId() == optionId).findFirst()
-                .orElseThrow(() -> new Exception("Command not found, please try again"));
+                .orElseThrow(() -> new java.lang.Exception("Command not found, please try again"));
     }
 
 

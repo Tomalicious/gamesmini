@@ -1,7 +1,6 @@
 package com.realdolmen.repositories;
 
 import com.realdolmen.domain.Borrower;
-import com.realdolmen.exceptions.NotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BorrowerRepository {
-    public Borrower findById(int id) throws NotFoundException {
+    public Borrower findById(int id) throws Exception {
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from borrower where id = ? ");
             preparedStatement.setInt(1, id);
@@ -21,12 +20,12 @@ public class BorrowerRepository {
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
             return createBorrowerObject(resultSet);
-        } catch (Exception e) {
-            throw new NotFoundException("borrower not found");
+        } catch (java.lang.Exception e) {
+            throw new Exception("borrower not found");
         }
     }
 
-    public Optional<Borrower> findByBorrowId(int id) throws NotFoundException {
+    public Optional<Borrower> findByBorrowId(int id) throws Exception {
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from borrower inner join borrow on borrower.id = borrow.borrower_id where borrow.id = ? ");
             preparedStatement.setInt(1, id);
@@ -34,12 +33,12 @@ public class BorrowerRepository {
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
             return Optional.ofNullable(createBorrowerObject(resultSet));
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             return Optional.empty();
         }
     }
 
-    public List<Borrower> findByName(String name) throws NotFoundException {
+    public List<Borrower> findByName(String name) throws Exception {
         List<Borrower> borrowers = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from borrower where borrower.borrower_name like ? ");
@@ -50,7 +49,7 @@ public class BorrowerRepository {
                 borrowers.add(createBorrowerObject(resultSet));
             }
             if (borrowers.isEmpty()) {
-                throw new NotFoundException("No borrowers are found!");
+                throw new Exception("No borrowers are found!");
             }
             return borrowers;
         } catch (SQLException e) {

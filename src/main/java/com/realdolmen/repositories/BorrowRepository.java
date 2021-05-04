@@ -1,14 +1,13 @@
 package com.realdolmen.repositories;
 
 import com.realdolmen.domain.Borrow;
-import com.realdolmen.exceptions.NotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BorrowRepository {
-    public List<Borrow> findAll() throws NotFoundException {
+    public List<Borrow> findAll() throws Exception {
         List<Borrow> borrowList = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from borrow");
@@ -26,7 +25,7 @@ public class BorrowRepository {
             }
             return borrowList;
         } catch (SQLException e) {
-            throw new NotFoundException("borrowed items not found", e);
+            throw new Exception("borrowed items not found", e);
         }
     }
 }

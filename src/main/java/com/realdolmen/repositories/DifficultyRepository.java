@@ -1,8 +1,6 @@
 package com.realdolmen.repositories;
 
-import com.realdolmen.domain.Borrower;
 import com.realdolmen.domain.Difficulty;
-import com.realdolmen.exceptions.NotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DifficultyRepository {
-    public List<Difficulty> findAll() throws NotFoundException {
+    public List<Difficulty> findAll() throws Exception {
         List<Difficulty> difficulties = new ArrayList<>();
         try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from difficulty");
@@ -23,7 +21,7 @@ public class DifficultyRepository {
                 difficulties.add(new Difficulty(resultSet.getInt("id"), resultSet.getString("difficulty_name")));
             }
             if (difficulties.isEmpty()) {
-                throw new NotFoundException("No borrowers are found!");
+                throw new Exception("No borrowers are found!");
             }
             return difficulties;
         } catch (SQLException e) {

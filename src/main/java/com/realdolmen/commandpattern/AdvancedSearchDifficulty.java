@@ -2,7 +2,6 @@ package com.realdolmen.commandpattern;
 
 import com.realdolmen.domain.Difficulty;
 import com.realdolmen.domain.Game;
-import com.realdolmen.exceptions.NotFoundException;
 import com.realdolmen.services.DifficultyServiceImpl;
 import com.realdolmen.services.GameServiceImpl;
 import com.realdolmen.services.Service;
@@ -17,7 +16,7 @@ public class AdvancedSearchDifficulty implements Command {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
-    public void execute() throws NotFoundException {
+    public void execute() throws java.lang.Exception {
         System.out.println("---- List of difficulties -----");
         List<Difficulty> difficulties = difficultyService.findAll();
         difficulties.forEach(difficulty -> System.out.println("id= " + difficulty.getId() + " difficulty= " + difficulty.getDifficultyName()));
